@@ -1,1 +1,70 @@
-Hello World
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Boldhops</title>
+  <style>
+    #canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="400"></canvas>
+
+  <script>
+    // Hent canvas-elementet fra DOM
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    // Definer boldens egenskaber
+    var ball = {
+      x: 200,   // Startposition på x-aksen
+      y: 200,   // Startposition på y-aksen
+      radius: 20,
+      dx: 2,    // Bevægelse på x-aksen
+      dy: -2,   // Bevægelse på y-aksen
+    };
+
+    // Funktion til at tegne bolden
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "red";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    // Funktion til at opdatere boldens position
+    function updateBallPosition() {
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      // Tjek om bolden rammer væggene
+      if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+        ball.dx = -ball.dx; // Skift x-retning
+      }
+
+      if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+        ball.dy = -ball.dy; // Skift y-retning
+      }
+    }
+
+    // Funktion til at rydde canvas
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Hovedspilloop
+    function gameLoop() {
+      clearCanvas();
+      drawBall();
+      updateBallPosition();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start spillet
+    gameLoop();
+  </script>
+</body>
+</html>
+
